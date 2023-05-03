@@ -20,5 +20,14 @@ namespace ManejadorDePresupuestos.Servicios
                   SELECT SCOPE_IDENTITY();", tipoCuenta);  
             };
         }
+        public async Task<bool> Existe(string nombre, int UsuarioID) {
+            using var connection = new SqlConnection(connectionString);
+            var existe = await connection.QueryFirstOrDefaultAsync<int>(
+                            @"SELECT 1
+                            FROM TiposCuentas
+                            WHERE Nombre = @Nombre AND UsuarioId =@UsuarioId;",
+                            new { nombre, UsuarioID});
+            return existe == 1;
+        }
     }
 }
