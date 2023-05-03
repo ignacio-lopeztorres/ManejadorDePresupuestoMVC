@@ -12,8 +12,8 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 <form asp-action="Crear">
     <div class="mb-3">
-        <label for="Nombre" class="form-label">Nombre</label>
-        <input type="text" id="Nombre" name="Nombre" class="form-control"/>
+        <label asp-for="Nombre" class="form-label"></label>
+        <input type="text" asp-for="Nombre" class="form-control"/>
     </div>
     <button class="btn btn-outline-primary">Enviar</button>
 </form>
