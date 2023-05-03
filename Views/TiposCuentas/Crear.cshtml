@@ -5,40 +5,16 @@
 
 <h1>Crear tipo de cuenta</h1>
 <h5>
-    El tipo de cuenat se refiere a como podemos agrupar cuentas.
+    El tipo de cuenta se refiere a como podemos agrupar cuentas.
     Ejemplo: Préstamo,Tarjeta de crédito, etc.
 </h5>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form asp-action="Crear">
     <div class="mb-3">
         <label asp-for="Nombre" class="form-label"></label>
         <input type="text" asp-for="Nombre" class="form-control"/>
         <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control"/>
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Edad" class="form-label"></label>
-        <input asp-for="Edad" class="form-control" />
-        <span asp-validation-for="Edad" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="URL" class="form-label"></label>
-        <input asp-for="URL" class="form-control" />
-        <span asp-validation-for="URL" class="text-danger"></span>
-    </div>
-    
-    <div class="mb-3">
-        <label asp-for="CreditCard" class="form-label"></label>
-        <input asp-for="CreditCard" class="form-control" />
-        <span asp-validation-for="CreditCard" class="text-danger"></span>
     </div>
 
     <button class= "btn btn-outline-primary">Enviar</button>
