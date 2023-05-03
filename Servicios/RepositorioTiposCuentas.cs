@@ -36,5 +36,19 @@ namespace ManejadorDePresupuestos.Servicios
                                         FROM TiposCuentas
                                         WHERE UsuarioId = @UsuarioId", new {usuarioId });
         }
+        public async Task Actualizar(TipoCuenta tipoCuenta) {
+            using var connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync(@"UPDATE TiposCuentas
+                                            SET Nombre = @Nombre 
+                                            WHERE Id = @Id", tipoCuenta);
+        }
+        public async Task<TipoCuenta> ObtenerPorId(int Id, int usuarioId) { 
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<TipoCuenta>(@"
+                                        SELECT Id, Nombre, Orden
+                                        FROM TiposCuentas
+                                        WHERE Id = @Id AND UsuarioId = @UsuarioId", new { Id, usuarioId});
+                 
+        }
     }
 }
