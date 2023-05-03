@@ -17,6 +17,11 @@ namespace ManejadorDePresupuestos.Controllers
             _logger = logger;
             this.repositorioTiposCuentas = repositorioTiposCuentas;
         }
+        public async Task<IActionResult> Index() {
+            var usuarioId = 1;
+            var tiposCuentas = await repositorioTiposCuentas.Obtener(usuarioId);
+            return View(tiposCuentas);
+        }
         public IActionResult Crear() {
             return View();
         }
@@ -39,7 +44,21 @@ namespace ManejadorDePresupuestos.Controllers
                 return View(tipoCuenta);
             }
             await  repositorioTiposCuentas.Crear(tipoCuenta);
-            return View();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> VerificarExisteTipoCuenta(string nombre) {
+            var UsuarioId = 1;
+
+            //verifica si ya esiste el tipo cuenta
+            var yaExisteTipoCuenta = await repositorioTiposCuentas.Existe(nombre, UsuarioId);
+
+            if (yaExisteTipoCuenta)
+            {
+                return Json($"el nombre {nombre} ya existe");
+            }
+
+            return Json(true);
         }
     }
 }

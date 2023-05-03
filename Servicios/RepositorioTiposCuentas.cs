@@ -25,9 +25,16 @@ namespace ManejadorDePresupuestos.Servicios
             var existe = await connection.QueryFirstOrDefaultAsync<int>(
                             @"SELECT 1
                             FROM TiposCuentas
-                            WHERE Nombre = @Nombre AND UsuarioId =@UsuarioId;",
+                            WHERE Nombre = @Nombre AND UsuarioId = @UsuarioId;",
                             new { nombre, UsuarioID});
             return existe == 1;
+        }
+
+        public async Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId) { 
+            using var connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<TipoCuenta>(@"SELECT Id, Nombre, Orden
+                                        FROM TiposCuentas
+                                        WHERE UsuarioId = @UsuarioId", new {usuarioId });
         }
     }
 }

@@ -6,5 +6,6 @@ namespace ManejadorDePresupuestos.Servicios
     {
         Task Crear(TipoCuenta tipoCuenta);
         Task<bool> Existe(string nombre, int UsuarioID);
+        Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
     }
 }
