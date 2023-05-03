@@ -16,7 +16,11 @@ namespace ManejadorDePresupuestos.Controllers
         }
 
         [HttpPost]
-        public IActionResult Crear(TipoCuenta tipoCuenta) { 
+        public IActionResult Crear(TipoCuenta tipoCuenta) {
+            if (!ModelState.IsValid) //permite verificar que Modelo sea correcto, si no es correcto al usuario se le enviara un mensaje de error
+            {
+                return View(tipoCuenta);
+            }
             return View();
         }
     }
