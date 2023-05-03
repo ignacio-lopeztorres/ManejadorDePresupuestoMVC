@@ -5,7 +5,7 @@ namespace ManejadorDePresupuestos.Models
 {
     public class TipoCuenta //:IValidatableObject
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] //esta anotacion sirve para que el campo no se envie vacio
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }
