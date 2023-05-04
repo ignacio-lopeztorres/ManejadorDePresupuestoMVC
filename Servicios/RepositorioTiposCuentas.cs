@@ -19,8 +19,11 @@ namespace ManejadorDePresupuestos.Servicios
             //uso de dapper
             using (var connection = new SqlConnection(connectionString))
             {
-                var id = await connection.QuerySingleAsync<int>($@"INSERT INTO TiposCuentas (Nombre, UsuarioId, Orden) VALUES (@Nombre, @UsuarioId, 0);
-                  SELECT SCOPE_IDENTITY();", tipoCuenta);
+                var id = await connection.QuerySingleAsync<int>
+                                        ("TiposCuenta_Insertar",
+                                        new { tipoCuenta.UsuarioId, nombre = tipoCuenta.Nombre  },
+                                        commandType: System.Data.CommandType.StoredProcedure); 
+                tipoCuenta.Id = id;
             };
         }
 
