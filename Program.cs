@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRepositorioTiposCuentas, RepositorioTiposCuentas>(); //configurado la inyeccion de dependencia
 builder.Services.AddTransient<IServicioUsuarios, ServicioUsuarios>();
+builder.Services.AddTransient<IRepositorioCuentas, RepositorioCuentas>();
 
 var app = builder.Build();
 
