@@ -22,5 +22,6 @@ namespace ManejadorDePresupuestos.Models
 
         [StringLength(maximumLength: 1000)]
         public string Descripcion { get; set; }
+        public string TipoCuenta { get; set; }
     }
 }
