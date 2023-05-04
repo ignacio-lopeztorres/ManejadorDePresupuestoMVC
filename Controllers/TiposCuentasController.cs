@@ -81,8 +81,10 @@ namespace ManejadorDePresupuestos.Controllers
             await repositorioTiposCuentas.Actualizar(tipoCuenta);
             return RedirectToAction("Index");
         }
+
         [HttpGet]
-        public async Task<IActionResult> Borrar(int Id) {
+        public async Task<IActionResult> Borrar(int Id)
+        {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var tipoCuenta = await repositorioTiposCuentas.ObtenerPorId(Id, usuarioId);
 
@@ -122,8 +124,24 @@ namespace ManejadorDePresupuestos.Controllers
 
             return Json(true);
         }
+
         [HttpPost]
-        public async Task<IActionResult> Ordenar([FromBody] int[] ids) {
+        public async Task<IActionResult> Ordenar([FromBody] int[] ids)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var tiposCuentas = await repositorioTiposCuentas.Obtener(usuarioId);
+            var idsTiposCuentas = tiposCuentas.Select(x => x.Id);
+
+            var idsTiposCuentasNoPertenecenAlUsuario = ids.Except(idsTiposCuentas).ToList();
+
+            if (idsTiposCuentasNoPertenecenAlUsuario.Count > 0)
+            {
+                return Forbid();
+            }
+            var tiposCuentasOrdenados = ids.Select((valor, Indice) => new TipoCuenta() { Id = valor, Orden = Indice + 1 }).AsEnumerable();
+
+            await repositorioTiposCuentas.Ordenar(tiposCuentasOrdenados);
+
             return Ok();
         }
     }

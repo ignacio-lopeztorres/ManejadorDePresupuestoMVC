@@ -10,5 +10,6 @@ namespace ManejadorDePresupuestos.Servicios
         Task<bool> Existe(string nombre, int UsuarioID);
         Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
         Task<TipoCuenta> ObtenerPorId(int Id, int usuarioId);
+        Task Ordenar(IEnumerable<TipoCuenta> tipoCuentasOrdenado);
     }
 }
