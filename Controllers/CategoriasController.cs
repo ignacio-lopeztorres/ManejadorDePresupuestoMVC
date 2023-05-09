@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ManejadorDePresupuestos.Controllers
 {
-    public class CategoriaController : Controller
+    public class CategoriasController : Controller
     {
         private readonly IRepositorioCategorias repositorioCategorias;
         private readonly IServicioUsuarios servicioUsuarios;
 
-        public CategoriaController(IRepositorioCategorias repositorioCategorias,
+        public CategoriasController(IRepositorioCategorias repositorioCategorias,
             IServicioUsuarios servicioUsuarios)
         {
             this.repositorioCategorias = repositorioCategorias;
@@ -36,6 +36,7 @@ namespace ManejadorDePresupuestos.Controllers
             }
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             categoria.UsuarioId = usuarioId;
+            var valor = Convert.ToInt32(categoria.TipoOperacionId);
             await repositorioCategorias.Crear(categoria);
             return RedirectToAction("Index");
         }

@@ -18,7 +18,7 @@ namespace ManejadorDePresupuestos.Servicios
             using var connection = new SqlConnection(_connectionString);
             var id = await connection.QuerySingleAsync<int>(@"
                 INSERT INTO Categorias (Nombre, TipoOperacionId, UsuarioId)
-                VALUES (@Nombre, @TipOperacionId, @UsuarioId);
+                VALUES (@Nombre, @TipoOperacionIdVal, @UsuarioId);
                 SELECT SCOPE_IDENTITY();", categoria);
             categoria.Id = id;
         }

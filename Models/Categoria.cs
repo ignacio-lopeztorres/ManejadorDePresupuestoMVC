@@ -10,7 +10,10 @@ namespace ManejadorDePresupuestos.Models
         [StringLength(maximumLength: 50, ErrorMessage = "No puede ser mmayor a {1} caracteres")]
         public string Nombre { get; set; }
 
-        public TipoOperacion tipoOperacionId { get; set; }
+        [Display(Name = "Tipo Operacion")]
+        public TipoOperacion TipoOperacionId { get; set; }
+
+        public int TipoOperacionIdval => Convert.ToInt32(TipoOperacionId);
 
         public int UsuarioId { get; set; }
     }
