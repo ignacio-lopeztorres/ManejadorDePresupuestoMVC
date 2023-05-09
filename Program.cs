@@ -7,6 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRepositorioTiposCuentas, RepositorioTiposCuentas>(); //configurado la inyeccion de dependencia
 builder.Services.AddTransient<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddTransient<IRepositorioCuentas, RepositorioCuentas>();
+builder.Services.AddTransient<IRepositorioCategorias, RepositorioCategorias>();
 builder.Services.AddAutoMapper(typeof(Program)); //configurando auto mapper en la aplicacion
 
 var app = builder.Build();
