@@ -5,6 +5,7 @@ namespace ManejadorDePresupuestos.Servicios
     public interface IRepositorioCuentas
     {
         Task Actualizar(CuentaCreacionViewModel cuenta);
+        Task Borrar(int Id);
         Task<IEnumerable<Cuenta>> Buscar(int usuarioId);
 
         Task Crear(Cuenta cuenta);
