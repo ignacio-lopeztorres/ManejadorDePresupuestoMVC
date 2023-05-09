@@ -22,5 +22,11 @@ namespace ManejadorDePresupuestos.Servicios
                 SELECT SCOPE_IDENTITY();", categoria);
             categoria.Id = id;
         }
+
+        public async Task<IEnumerable<Categoria>> Obtener(int usuarioId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.QueryAsync<Categoria>("SELECT * FROM Categorias WHERE UsuarioId = @UsuarioId", new { usuarioId });
+        }
     }
 }
