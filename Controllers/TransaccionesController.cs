@@ -1,4 +1,5 @@
-﻿using ManejadorDePresupuestos.Models;
+﻿using AutoMapper;
+using ManejadorDePresupuestos.Models;
 using ManejadorDePresupuestos.Servicios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +13,21 @@ namespace ManejadorDePresupuestos.Controllers
         private readonly IServicioUsuarios servicioUsuarios;
         private readonly IRepositorioCategorias repositorioCategorias;
         private readonly IRepositorioTransacciones repositorioTransacciones;
+        private readonly IMapper mapper;
 
         public TransaccionesController(
             IRepositorioCuentas repositorioCuenta,
             IServicioUsuarios servicioUsuarios,
             IRepositorioCategorias repositorioCategorias,
-            IRepositorioTransacciones repositorioTransacciones
+            IRepositorioTransacciones repositorioTransacciones,
+            IMapper mapper
         )
         {
             this.repositorioCuentas = repositorioCuenta;
             this.servicioUsuarios = servicioUsuarios;
             this.repositorioCategorias = repositorioCategorias;
             this.repositorioTransacciones = repositorioTransacciones;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
@@ -74,6 +78,66 @@ namespace ManejadorDePresupuestos.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Editar(int id)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var transaccion = await repositorioTransacciones.ObtenerPorId(id, usuarioId);
+
+            if (transaccion is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            var modelo = mapper.Map<TransaccionActualizacionViewModel>(transaccion);
+            modelo.MontoAnterior = modelo.Monto;
+
+            if (modelo.TipoOperacionId == TipoOperacion.Gasto)
+            {
+                modelo.MontoAnterior = modelo.Monto * -1;
+            }
+            modelo.CuentaAnteriorId = transaccion.CuentaId;
+            modelo.Categorias = await ObtenerCategorias(usuarioId, transaccion.TipoOperacionId);
+            modelo.Cuentas = await ObtenerCuentas(usuarioId);
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Editar(TransaccionActualizacionViewModel modelo)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+
+            if (!ModelState.IsValid)
+            {
+                modelo.Cuentas = await ObtenerCuentas(usuarioId);
+                modelo.Categorias = await ObtenerCategorias(usuarioId, modelo.TipoOperacionId);
+                return View(modelo);
+            }
+
+            var cuenta = await repositorioCuentas.ObtenerPorId(modelo.CuentaId, usuarioId);
+
+            if (cuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            var categorias = await repositorioCategorias.ObtenerPorId(modelo.CategoriaId, usuarioId);
+            //valida los datos del usuario
+            if (categorias is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+            var transaccion = mapper.Map<Transaccion>(modelo);
+
+            if (modelo.TipoOperacionId == TipoOperacion.Gasto)
+            {
+                transaccion.Monto *= -1;
+            }
+
+            await repositorioTransacciones.Actualizar(transaccion, modelo.MontoAnterior, modelo.CuentaAnteriorId);
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IEnumerable<SelectListItem>> ObtenerCuentas(int usuarioId)
         {
             var cuentas = await repositorioCuentas.Buscar(usuarioId);
@@ -92,27 +156,6 @@ namespace ManejadorDePresupuestos.Controllers
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var categorias = await ObtenerCategorias(usuarioId, tipoOperacion);
             return Ok(categorias);
-        }
-
-        // GET: TransaccionesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TransaccionesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: TransaccionesController/Delete/5
