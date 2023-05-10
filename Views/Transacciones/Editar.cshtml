@@ -1,14 +1,18 @@
-﻿@model TransaccionCreacionViewModel;
+﻿@model TransaccionActualizacionViewModel;
 
 @{
-    ViewData["Title"] = "Crear Transaccion";
+    ViewData["Title"] = "Editar Transaccion";
 }
 
-<h1>Crear Transaccion</h1>
+<h1>Editar Transaccion</h1>
 <h5>Una transaccion te permite indicar tus ingresos y gastos</h5>
 
-<form asp-action="Crear">
+<form asp-action="Editar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="MontoAnterior" />
+    <input type="hidden" asp-for="CuentaAnteriorId" />
+    
     <div class="mb-3">
         <label asp-for="FechaTransaccion" class="form-label"></label>
         <input asp-for="FechaTransaccion" class="form-control" />
@@ -21,7 +25,7 @@
     </div>
     <div class="mb-3">
         <label asp-for="TipoOperacionId" class="form-label"></label>
-        <select asp-for="TipoOperacionId" asp-items="Html.GetEnumSelectList<TipoOperacion>()" class="form-select" ></select>
+        <select asp-for="TipoOperacionId" asp-items="Html.GetEnumSelectList<TipoOperacion>()" class="form-select"></select>
         <span asp-validation-for="TipoOperacionId" class="text-danger"></span>
     </div>
     <div class="mb-3">
@@ -36,10 +40,11 @@
     </div>
     <div class="mb-3">
         <label asp-for="Nota" class="form-label"></label>
-        <textarea asp-for="Nota" class="form-control" ></textarea>
+        <textarea asp-for="Nota" class="form-control"></textarea>
         <span asp-validation-for="Nota" class="text-danger"></span>
     </div>
-    <button class="btn btn-primary">Enviar</button>
+    <button class="btn btn-primary">Actualizar</button>
+    <button class="btn btn-danger" asp-action="Borrar">Borrar</button>
     <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
 </form>
 

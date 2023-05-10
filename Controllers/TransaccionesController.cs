@@ -158,25 +158,19 @@ namespace ManejadorDePresupuestos.Controllers
             return Ok(categorias);
         }
 
-        // GET: TransaccionesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TransaccionesController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Borrar(int id)
         {
-            try
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var transaccion = await repositorioTransacciones.ObtenerPorId(id, usuarioId);
+
+            if (transaccion is null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("NoEncontrado", "Home");
             }
-            catch
-            {
-                return View();
-            }
+
+            await repositorioTransacciones.Borrar(id);
+            return RedirectToAction("Index");
         }
     }
 }
