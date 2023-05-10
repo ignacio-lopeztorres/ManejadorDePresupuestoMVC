@@ -1,18 +1,18 @@
-﻿@model Categoria
-
+﻿@model Categoria;
 @{
-    ViewData["Title"] = "Crear Categoría";
+    ViewData["Title"] = "Editar Categoria";
 }
-<h1>Crear Categoria</h1>
 
-<h5>La categoría nos permite indicar en qué gastamos nuesttro dinero,
-    también, de dónde proviene nuestros ingresos.
+<h1>Editar Categoria</h1>
+<h5>La Categoria nos permite indicar en qué gastamos nuestro dinero,
+    también, de donde probiene nuestro ingreso.
 </h5>
 
 
-<form asp-action="Crear">
+<form asp-action="Editar">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    
+    <input type="hidden" asp-for="Id" />
+
     <div class="mb-3">
         <label asp-for=Nombre class="form-label"></label>
         <input asp-for=Nombre type="text" class="form-control" />
