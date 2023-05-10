@@ -2,7 +2,7 @@
 
 namespace ManejadorDePresupuestos.Servicios
 {
-    public interface IRepositorioCuenta
+    public interface IRepositorioTransacciones
     {
         Task Crear(Transaccion transaccion);
     }

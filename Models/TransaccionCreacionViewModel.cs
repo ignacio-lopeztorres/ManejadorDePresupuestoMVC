@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ManejadorDePresupuestos.Models
 {
-    public class TransaccionesCreacionViewModel : Transaccion
+    public class TransaccionCreacionViewModel : Transaccion
     {
-        public TransaccionesCreacionViewModel()
+        public TransaccionCreacionViewModel()
         { }
 
         public IEnumerable<SelectListItem> Cuentas { get; set; }

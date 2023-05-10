@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace ManejadorDePresupuestos.Servicios
 {
-    public class RepositorioTransacciones : IRepositorioCuenta
+    public class RepositorioTransacciones : IRepositorioTransacciones
     {
         private readonly string _connectionStrig;
 
