@@ -45,7 +45,7 @@ namespace ManejadorDePresupuestos.Controllers
             return View(modelo);
         }
 
-        public async Task<IActionResult> Detalle(int id, int mes, int anio)
+        public async Task<IActionResult> Detalle(int id, int mes, int año)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var cuenta = await repositorioCuentas.ObtenerPorId(id, usuarioId);
@@ -56,14 +56,14 @@ namespace ManejadorDePresupuestos.Controllers
             DateTime fechaInicio;
             DateTime fechaFin;
 
-            if (mes <= 0 || mes > 12 || anio < 1900)
+            if (mes <= 0 || mes > 12 || año <= 1900)
             {
                 var hoy = DateTime.Today;
                 fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
             }
             else
             {
-                fechaInicio = new DateTime(mes, anio, 1);
+                fechaInicio = new DateTime(año, mes, 1);
             }
             fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
 
@@ -89,6 +89,13 @@ namespace ManejadorDePresupuestos.Controllers
             modelo.TransaccionesAgrupadas = transaccionesPorFecha;
             modelo.FechaInicio = fechaInicio;
             modelo.Fechafin = fechaFin;
+
+
+            ViewBag.mesAnterior = fechaInicio.AddMonths(-1).Month;
+            ViewBag.añoAnterior = fechaInicio.AddMonths(-1).Year;
+            ViewBag.mesPosterior = fechaInicio.AddMonths(1).Month;
+            ViewBag.añoPosterior = fechaInicio.AddMonths(1).Year;
+
             return View(modelo);
         }
 
