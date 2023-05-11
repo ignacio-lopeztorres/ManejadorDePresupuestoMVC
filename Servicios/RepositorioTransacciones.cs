@@ -36,6 +36,22 @@ namespace ManejadorDePresupuestos.Servicios
                 AND FechaTransaccion BETWEEN @FechaInicio AND @FechaFin", modelo);
         }
 
+        public async Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo)
+        {
+            using var connection = new SqlConnection(_connectionStrig);
+            return await connection.QueryAsync<Transaccion>(@"
+                SELECT t.Id, t.Monto, t.FechaTransaccion, c.Nombre as Categoria,
+                cu.Nombre as Cuenta, c.TipoOperacionId
+                FROM Transacciones t
+                INNER JOIN Categorias c
+                ON c.Id = t.CategoriaId
+                INNER JOIN Cuentas cu
+                ON cu.Id = t.CuentaId
+                WHERE t.UsuarioId = @UsuarioId
+                AND FechaTransaccion BETWEEN @FechaInicio AND @FechaFin
+                ORDER BY t.FechaTransaccion DESC", modelo);
+        }
+
         public async Task Actualizar(Transaccion transaccion, decimal montoAnterior, int cuentaAnteriorId)
         {
             using var connection = new SqlConnection(_connectionStrig);
