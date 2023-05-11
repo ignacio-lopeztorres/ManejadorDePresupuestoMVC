@@ -4,6 +4,7 @@ using ManejadorDePresupuestos.Servicios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
 
 namespace ManejadorDePresupuestos.Controllers
 {
@@ -78,7 +79,7 @@ namespace ManejadorDePresupuestos.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id, string UrlRetorno = null)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var transaccion = await repositorioTransacciones.ObtenerPorId(id, usuarioId);
@@ -98,6 +99,7 @@ namespace ManejadorDePresupuestos.Controllers
             modelo.CuentaAnteriorId = transaccion.CuentaId;
             modelo.Categorias = await ObtenerCategorias(usuarioId, transaccion.TipoOperacionId);
             modelo.Cuentas = await ObtenerCuentas(usuarioId);
+            modelo.UrlRetorno = UrlRetorno;
             return View(modelo);
         }
 
@@ -135,7 +137,13 @@ namespace ManejadorDePresupuestos.Controllers
 
             await repositorioTransacciones.Actualizar(transaccion, modelo.MontoAnterior, modelo.CuentaAnteriorId);
 
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(modelo.UrlRetorno))
+            {
+                return RedirectToAction("Index");
+            }
+            else {
+                return LocalRedirect(modelo.UrlRetorno);
+            }
         }
 
         public async Task<IEnumerable<SelectListItem>> ObtenerCuentas(int usuarioId)
@@ -159,7 +167,7 @@ namespace ManejadorDePresupuestos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Borrar(int id)
+        public async Task<IActionResult> Borrar(int id, string urlRetorno = null)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var transaccion = await repositorioTransacciones.ObtenerPorId(id, usuarioId);
@@ -170,7 +178,15 @@ namespace ManejadorDePresupuestos.Controllers
             }
 
             await repositorioTransacciones.Borrar(id);
-            return RedirectToAction("Index");
+            
+            if (string.IsNullOrEmpty(urlRetorno))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return LocalRedirect(urlRetorno);
+            }
         }
     }
 }
