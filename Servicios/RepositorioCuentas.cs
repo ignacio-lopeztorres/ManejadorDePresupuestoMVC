@@ -40,7 +40,7 @@ namespace ManejadorDePresupuestos.Servicios
             using var connection = new SqlConnection(_connectionString);
 
             var resultado = await connection.QueryFirstOrDefaultAsync<Cuenta>(@"
-                        SELECT Cuentas.Id, Cuentas.Nombre, Balance, Descripcion, tc.Id
+                        SELECT Cuentas.Id, Cuentas.Nombre, Balance, Descripcion, TipoCuentaId
                         FROM Cuentas
                         INNER JOIN TiposCuentas tc
                         ON tc.Id = Cuentas.TipoCuentaId
