@@ -15,7 +15,8 @@
             const calendarioEL = document.getElementById('calendario');
             const calendario = new FullCalendar.Calendar(calendarioEL, {
                 dayMaxEventRows:3,
-                InitialViews: 'dayGridMonth'
+                InitialView: 'dayGridMonth',
+                events: '/transacciones/ObtenerTransaccionesCalendario'
             });
             calendario.render();
         })
