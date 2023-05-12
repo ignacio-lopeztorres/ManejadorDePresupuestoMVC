@@ -3,8 +3,33 @@
 }
 
 <partial name="_Submenu" model="SubMenuTransacciones.Calendario"/>
-<div id="calendario">
+<div id="calendario"></div>
 
+<div class="modal fade" id="modalTransacciones" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transacciones del dia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th id="modalTablaFecha" colspan="2"></th>
+                            <th id="modalTablaIngresos" class="activo"></th>
+                            <th id="modalTablaGastos" class="pasivo"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalTablaCuerpo">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -32,7 +57,41 @@
                 }
             });
             const json = await response.json();
-            console.log(json);
+            
+            let ingresos = 0;
+            let gastos = 0;
+            const tipoOperacionIngresos = 1;
+
+            const formateador = new Intl.NumberFormat('en-Us', {
+                style: 'currency',
+                currency: 'USD'
+            });
+
+            const filas = json.map(transaccion => {
+                if (transaccion.tipoOperacionId === tipoOperacionIngresos) {
+                    ingresos += transaccion.monto;
+                } else {
+                    gastos += transaccion.monto;
+                }
+
+                return `<tr>
+                      <td>${transaccion.categoria}</td>
+                      <td>${transaccion.cuenta}</td>
+                      <td align="right" colspan="2"
+                        class=${transaccion.tipoOperacionId === tipoOperacionIngresos ?
+                            'activo' : 'pasivo' }>
+                            ${formateador.format(transaccion.monto)}
+                            </td>
+                    </tr>`;
+            });
+
+            $("#modalTablaCuerpo").html(filas);
+            $("#modalTablaIngresos").html(formateador.format(ingresos));
+            $("#modalTablaGastos").html(formateador.format(gastos));
+            $("#modalTablaFecha").html(fecha);
+
+            const modalTransacciones = new bootstrap.Modal(document.getElementById('modalTransacciones'));
+            modalTransacciones.show();
         }
     </script>
 }
