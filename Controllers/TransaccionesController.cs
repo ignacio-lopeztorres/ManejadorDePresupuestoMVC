@@ -165,7 +165,42 @@ namespace ManejadorDePresupuestos.Controllers
             });
 
             var nombreArchivo = $"Manejo Presupuesto - {FechaInicio.ToString("MMM yyyy")}.xlsx";
-            //var fechaReferencia = new DateTime()
+            return GenerarReporteExcel(nombreArchivo, transacciones);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelPorAnio(int anio)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var FechaInicio = new DateTime(anio, 1, 1);
+            var fechaFin = FechaInicio.AddMonths(1).AddDays(-1);
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(new ParametroObtenerTransaccionesPorUsuario
+            {
+                UsuarioId = usuarioId,
+                FechaInicio = FechaInicio,
+                FechaFin = fechaFin
+            });
+
+            var nombreArchivo = $"Manejo Presupuesto - {FechaInicio.ToString("yyyy")}.xlsx";
+            return GenerarReporteExcel(nombreArchivo, transacciones);
+        }
+
+        [HttpGet]
+        public async Task<FileResult> ExportarExcelTodo(int anio)
+        {
+            var usuarioId = servicioUsuarios.ObtenerUsuarioId();
+            var FechaInicio = DateTime.Today.AddYears(-100);
+            var fechaFin = DateTime.Today.AddYears(1000);
+
+            var transacciones = await repositorioTransacciones.ObtenerPorUsuarioId(new ParametroObtenerTransaccionesPorUsuario
+            {
+                UsuarioId = usuarioId,
+                FechaInicio = FechaInicio,
+                FechaFin = fechaFin
+            });
+
+            var nombreArchivo = $"Manejo Presupuesto - {FechaInicio.ToString("dd-MM-yyyy")}.xlsx";
             return GenerarReporteExcel(nombreArchivo, transacciones);
         }
 
