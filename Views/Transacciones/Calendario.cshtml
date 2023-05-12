@@ -15,10 +15,24 @@
             const calendarioEL = document.getElementById('calendario');
             const calendario = new FullCalendar.Calendar(calendarioEL, {
                 dayMaxEventRows:3,
-                InitialView: 'dayGridMonth',
-                events: '/transacciones/ObtenerTransaccionesCalendario'
+                initialView: 'dayGridMonth',
+                events: '/transacciones/ObtenerTransaccionesCalendario',
+                dateClick: async function(info){
+                    await buscarTransaccionesPorFecha(info.dateStr);
+                }
             });
             calendario.render();
-        })
+        });
+
+        async function buscarTransaccionesPorFecha(fecha){
+            const response = await fetch(`/Transacciones/ObtenerTransaccionesPorFecha?fecha=${fecha}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const json = await response.json();
+            console.log(json);
+        }
     </script>
 }
