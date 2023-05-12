@@ -1,5 +1,49 @@
-﻿@{
+﻿@model ReporteMensualViewModel
+
+@{
     ViewData["Title"] = "Reporte Mensual";
+    int anioAnterior = Model.Anio - 1;
+    int anioPosterior = Model.Anio + 1;
+    var resumenMontos = new ResumenMontosViewModel()
+            {
+                Ingresos = Model.Ingresos,
+                Gastos = Model.Gastos,
+                Total = Model.Total
+            };
 }
 
 <partial name="_Submenu" model="SubMenuTransacciones.Mensual" />
+<h4>
+    <a asp-route-anio="@anioAnterior" class="btn btn-secondary"><i class="bi-chevron-left"></i></a>
+    @Model.Anio
+    <a asp-route-anio="@anioPosterior" class="btn btn-secondary"><i class="bi-chevron-right"></i></a>
+</h4>
+
+<partial name="_ResumenMontos" model="@resumenMontos"/>
+
+<table class="table" style="font-size: 20px">
+    <thead>
+        <tr>
+            <th>Semana</th>
+            <th style="text-align: right">Ingresos</th>
+            <th style="text-align: right">Gastos</th>
+        </tr>
+    </thead>
+    @foreach (var transaccionesPorMes in Model.TransaccionesPorMes)
+    {
+        <tr>
+            <td>
+                <a style="text-decoration: none" asp-action="Index" asp-route-anio="@Model.Anio" asp-route-mes="@transaccionesPorMes.Mes">
+                    @transaccionesPorMes.FechaReferencia.ToString("MMM")
+                    
+                </a>
+            </td>
+            <td class="activo" style="text-align: right">
+                @transaccionesPorMes.Ingresos
+            </td>
+            <td class="pasivo" style="text-align: right">
+                @transaccionesPorMes.Gastos
+            </td>
+        </tr>
+    }
+</table>

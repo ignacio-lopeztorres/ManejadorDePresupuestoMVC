@@ -84,7 +84,7 @@ namespace ManejadorDePresupuestos.Servicios
             ", modelo);
         }
 
-        public async Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int año)
+        public async Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int anio)
         {
             using var connection = new SqlConnection(_connectionStrig);
             return await connection.QueryAsync<ResultadoObtenerPorMes>(@"
@@ -93,9 +93,9 @@ namespace ManejadorDePresupuestos.Servicios
                 FROM Transacciones
                 INNER JOIN Categorias cat
                 ON cat.Id = Transacciones.CategoriaId
-                WHERE Transacciones.UsuarioId = @usuarioId AND YEAR(FechaTransaccion) = @año
+                WHERE Transacciones.UsuarioId = @usuarioId AND YEAR(FechaTransaccion) = @anio
                 GROUP BY Month(FechaTransaccion), cat.TipoOperacionId
-            ", new { usuarioId, año });
+            ", new { usuarioId, anio });
         }
 
         public async Task Borrar(int id)

@@ -7,6 +7,6 @@
         public decimal Total => Ingresos - Gastos;
         public DateTime FechaReferencia { get; set; }
         public IEnumerable<ResultadoObtenerPorMes> TransaccionesPorMes { get; set; }
-        public int Año { get; set; }
+        public int Anio { get; set; }
     }
 }

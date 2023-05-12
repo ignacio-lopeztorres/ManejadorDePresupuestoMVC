@@ -15,9 +15,9 @@ namespace ManejadorDePresupuestos.Servicios
             this.httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<IEnumerable<ResultadoObtenerPorSemana>> ObtenerReporteSemanal(int usuarioId, int mes, int año, dynamic ViewBag)
+        public async Task<IEnumerable<ResultadoObtenerPorSemana>> ObtenerReporteSemanal(int usuarioId, int mes, int anio, dynamic ViewBag)
         {
-            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, año);
+            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, anio);
 
             var parametro = new ParametroObtenerTransaccionesPorUsuario()
             {
@@ -30,9 +30,9 @@ namespace ManejadorDePresupuestos.Servicios
             return modelo;
         }
 
-        public async Task<ReporteTransaccionesDetalladas> ObtenerReporteTransaccionesDetalladas(int usuarioId, int mes, int año, dynamic ViewBag)
+        public async Task<ReporteTransaccionesDetalladas> ObtenerReporteTransaccionesDetalladas(int usuarioId, int mes, int anio, dynamic ViewBag)
         {
-            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, año);
+            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, anio);
 
             var parametro = new ParametroObtenerTransaccionesPorUsuario()
             {
@@ -46,9 +46,9 @@ namespace ManejadorDePresupuestos.Servicios
             return modelo;
         }
 
-        public async Task<ReporteTransaccionesDetalladas> ObtenerReporteTransaccionesDetalladasPorCuenta(int usuarioId, int cuentaId, int mes, int año, dynamic ViewBag)
+        public async Task<ReporteTransaccionesDetalladas> ObtenerReporteTransaccionesDetalladasPorCuenta(int usuarioId, int cuentaId, int mes, int anio, dynamic ViewBag)
         {
-            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, año);
+            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, anio);
 
             var ObtenerTransaccionesPorCuenta = new ObtenerTransaccionesPorCuenta()
             {
@@ -92,19 +92,19 @@ namespace ManejadorDePresupuestos.Servicios
             return modelo;
         }
 
-        private (DateTime fechaInicio, DateTime fechaFin) GenerarFechaInicioYFin(int mes, int año)
+        private (DateTime fechaInicio, DateTime fechaFin) GenerarFechaInicioYFin(int mes, int anio)
         {
             DateTime fechaInicio;
             DateTime fechaFin;
 
-            if (mes <= 0 || mes > 12 || año <= 1900)
+            if (mes <= 0 || mes > 12 || anio <= 1900)
             {
                 var hoy = DateTime.Today;
                 fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
             }
             else
             {
-                fechaInicio = new DateTime(año, mes, 1);
+                fechaInicio = new DateTime(anio, mes, 1);
             }
             fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
             return (fechaInicio, fechaFin);
