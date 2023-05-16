@@ -1,4 +1,6 @@
+using ManejadorDePresupuestos.Models;
 using ManejadorDePresupuestos.Servicios;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,9 @@ builder.Services.AddTransient<IRepositorioTransacciones, RepositorioTransaccione
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IServicioReportes, ServicioReportes>();
 builder.Services.AddAutoMapper(typeof(Program)); //configurando auto mapper en la aplicacion
+builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
+builder.Services.AddTransient<IUserStore<Usuario>, UsuarioStore>();
+builder.Services.AddIdentityCore<Usuario>();
 
 var app = builder.Build();
 
