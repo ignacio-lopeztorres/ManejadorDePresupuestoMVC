@@ -16,12 +16,20 @@ builder.Services.AddTransient<IServicioReportes, ServicioReportes>();
 builder.Services.AddAutoMapper(typeof(Program)); //configurando auto mapper en la aplicacion
 builder.Services.AddTransient<IRepositorioUsuarios, RepositorioUsuarios>();
 builder.Services.AddTransient<IUserStore<Usuario>, UsuarioStore>();
-builder.Services.AddIdentityCore<Usuario>(opciones => {
+builder.Services.AddTransient<SignInManager<Usuario>>();
+builder.Services.AddIdentityCore<Usuario>(opciones =>
+{
     opciones.Password.RequireDigit = false;
     opciones.Password.RequireLowercase = false;
     opciones.Password.RequireUppercase = false;
     opciones.Password.RequireNonAlphanumeric = false;
 });
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    option.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    option.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
+}).AddCookie(IdentityConstants.ApplicationScheme);
 
 var app = builder.Build();
 
@@ -37,6 +45,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
