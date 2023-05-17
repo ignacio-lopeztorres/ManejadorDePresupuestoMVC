@@ -1,11 +1,21 @@
 using ManejadorDePresupuestos.Models;
 using ManejadorDePresupuestos.Servicios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//creando politica de seguridad
+var politicaUsuariosAutenticados = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+
+builder.Services.AddControllersWithViews(opciones => {
+    //creando un filto para la politica de seguridad
+    opciones.Filters.Add(new AuthorizeFilter(politicaUsuariosAutenticados));
+});
 builder.Services.AddTransient<IRepositorioTiposCuentas, RepositorioTiposCuentas>(); //configurado la inyeccion de dependencia
 builder.Services.AddTransient<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddTransient<IRepositorioCuentas, RepositorioCuentas>();
@@ -29,7 +39,10 @@ builder.Services.AddAuthentication(option =>
     option.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
     option.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
     option.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
-}).AddCookie(IdentityConstants.ApplicationScheme);
+}).AddCookie(IdentityConstants.ApplicationScheme, option =>
+{
+    option.LoginPath = "/usuarios/Login";
+});
 
 var app = builder.Build();
 
