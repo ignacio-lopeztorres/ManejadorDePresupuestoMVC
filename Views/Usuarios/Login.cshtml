@@ -1,12 +1,10 @@
-﻿@model RegistroViewModel
+﻿@model LoginViewModel
 
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Login";
 }
 
-<h1>Registrate</h1>
-
-<form asp-action="Registro">
+<form asp-action="Login">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
@@ -19,7 +17,11 @@
         <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <button class="btn btn-primary">Registrate</button>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" asp-for="RememberMe" />
+        <label class="form-check-label" asp-for="RememberMe"></label>
+    </div>
+    <button class="btn btn-primary">Login</button>
 </form>
 
 @section Scripts {
