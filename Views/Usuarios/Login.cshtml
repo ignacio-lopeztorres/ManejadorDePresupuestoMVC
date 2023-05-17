@@ -4,25 +4,32 @@
     ViewData["Title"] = "Login";
 }
 
-<form asp-action="Login">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<h1>Login</h1>
 
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input type="text" asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input type="text" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="RememberMe" />
+                <label class="form-check-label" asp-for="RememberMe"></label>
+            </div>
+            <button class="btn btn-primary">Login</button>
+            <a class="btn btn-success" asp-action="Registro">Crea una cuenta nueva</a>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" asp-for="RememberMe" />
-        <label class="form-check-label" asp-for="RememberMe"></label>
-    </div>
-    <button class="btn btn-primary">Login</button>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
