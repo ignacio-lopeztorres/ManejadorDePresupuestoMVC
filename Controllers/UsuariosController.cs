@@ -72,7 +72,7 @@ namespace ManejadorDePresupuestos.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Nombre de Usuario o Passwor es incorrecto");
+                ModelState.AddModelError(string.Empty, "Nombre de Usuario o Password es incorrecto");
                 return View(modelo);
             }
         }
