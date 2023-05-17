@@ -34,6 +34,13 @@ namespace ManejadorDePresupuestos.Servicios
                     OFFSET {paginacion.RecordsASaltar} ROWS FETCH NEXT {paginacion.RecordsPorPagina}
                     ROWS ONLY", new { usuarioId });
         }
+        public async Task<int> Contar(int usuarioId) {
+            using var connection = new SqlConnection(_connectionString);
+            return await connection.ExecuteScalarAsync<int>(
+                @"SELECT COUNT(*)
+                FROM Categorias
+                WHERE UsuarioId = @UsuarioId", new { usuarioId });
+        }
 
         public async Task<IEnumerable<Categoria>> Obtener(int usuarioId, TipoOperacion tipoOperacionId)
         {

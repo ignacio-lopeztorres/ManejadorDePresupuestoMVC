@@ -21,7 +21,16 @@ namespace ManejadorDePresupuestos.Controllers
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioId();
             var categorias = await repositorioCategorias.Obtener(usuarioId, paginacionViewModel);
-            return View(categorias);
+            var totalCategoria = await repositorioCategorias.Contar(usuarioId);
+            var respuestaVM = new PaginacionRespuesta<Categoria>
+            {
+                Elementos = categorias,
+                Pagina = paginacionViewModel.Pagina,
+                RecordsPorPagina = paginacionViewModel.RecordsPorPagina,
+                CantidadTotalRecords = totalCategoria,
+                BaseURL = "/Categorias"
+            };
+            return View(respuestaVM);
         }
 
         [HttpGet]
