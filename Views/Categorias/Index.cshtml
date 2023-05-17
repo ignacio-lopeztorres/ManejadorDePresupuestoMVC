@@ -6,14 +6,25 @@
 <h1>
     Categorias
 </h1>
-<h5>La categoria nos permite indicar en que gastamos nuestro dinero,
+<h5>
+    La categoria nos permite indicar en que gastamos nuestro dinero,
     tambien, de donde proviene nuestro ingresos.
 </h5>
 
-<h2>Cantidad de Categorías: @Model.CantidadTotalRecords - Cantidad de Páginas: @Model.CantidadTotalDePaginas</h2>
-
 <a asp-action="Crear" class="btn btn-primary mb-3">Crear nueva categoria</a>
-<partial name="_paginacion"/>
+
+<div class="row">
+    <label>Cantidad de registros a mostrar:</label>
+    <div class="mb-3 col-auto">
+        <select asp-for="@Model.RecordsPorPagina" id="cantidadRecordsPorPagina" class="form-select">
+            <option>5</option>
+            <option>10</option>
+            <option>15</option>
+        </select>
+    </div>
+</div>
+<partial name="_paginacion" />
+
 <table class="table">
     <thead>
         <tr>
@@ -23,7 +34,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var categoria in Model.Elementos){
+        @foreach (var categoria in Model.Elementos)
+        {
             <tr>
                 <td>
                     <a class="btn btn-primary" asp-action="Editar" asp-route-id="@categoria.Id">Editar</a>
@@ -33,6 +45,17 @@
                 <td>@categoria.TipoOperacionId.ToString()</td>
             </tr>
         }
-        
+
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+
+    
+    $("#cantidadRecordsPorPagina").change(function(){
+        const recordsPorPagina = $(this).val();
+            location.href = `/Categorias/?pagina=1&RecordsPorPagina=${recordsPorPagina}`
+    })
+    </script>
+}
