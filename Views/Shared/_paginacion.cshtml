@@ -1,0 +1,18 @@
+﻿@model PaginacionRespuesta
+
+@{
+    var plantillaLink = string.Concat(Model.BaseURL, "?pagina={0}&RecordsPorPagina={1}");
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @for (var pagina = 1; pagina <= Model.CantidadTotalDePaginas; pagina++)
+        {
+            <li class="page-item @(pagina == Model.Pagina ? "active" : null) ">
+                <a class="page-link" href="@string.Format(plantillaLink, pagina, Model.RecordsPorPagina)">
+                    @pagina
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
