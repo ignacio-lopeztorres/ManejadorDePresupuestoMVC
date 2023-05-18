@@ -9,7 +9,8 @@ namespace ManejadorDePresupuestos.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")] //esta anotacion sirve para que el campo no se envie vacio
         [PrimeraLetraMayuscula]
-        [Remote(action: "VerificarExisteTipoCuenta", controller: "TiposCuentas")]
+        [Remote(action: "VerificarExisteTipoCuenta", controller: "TiposCuentas",
+            AdditionalFields = nameof(Id))]
         public string Nombre { get; set; }
         public int UsuarioId { get; set; }
         public int Orden { get; set; }

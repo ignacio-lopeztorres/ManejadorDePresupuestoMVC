@@ -27,14 +27,14 @@ namespace ManejadorDePresupuestos.Servicios
             };
         }
 
-        public async Task<bool> Existe(string nombre, int UsuarioID)
+        public async Task<bool> Existe(string nombre, int UsuarioId, int id = 0)
         {
             using var connection = new SqlConnection(connectionString);
             var existe = await connection.QueryFirstOrDefaultAsync<int>(
                             @"SELECT 1
                             FROM TiposCuentas
-                            WHERE Nombre = @Nombre AND UsuarioId = @UsuarioId;",
-                            new { nombre, UsuarioID });
+                            WHERE Nombre = @Nombre AND UsuarioId = @UsuarioId AND Id <> @Id;",
+                            new { nombre, UsuarioId, id });
             return existe == 1;
         }
 
